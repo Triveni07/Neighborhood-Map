@@ -3,16 +3,28 @@ import { withScriptjs, withGoogleMap, GoogleMap, Marker } from 'react-google-map
 
 class Map extends Component {
 
-
     render() {
 
         // load the googleMapUrl and api key withScriptJS HOC in react-google-maps 
         const NeighborhoodMap = withScriptjs(withGoogleMap(props =>
             <GoogleMap
-                defaultZoom={10}
-                defaultCenter={{ lat: 59.3293, lng: 18.0686 }}>
+                defaultZoom={11}
+                defaultCenter={this.props.center}>
                 <Marker
-                    position={{ lat: 59.3293, lng: 18.0686 }} />
+                    position={{ lat: 59.3671, lng: 17.8691 }} />
+                <Marker
+                    position={{ lat: 59.4541, lng: 17.9243 }} />
+                <Marker
+                    position={{ lat: 59.3257, lng: 18.0719 }} />
+                <Marker
+                    position={{ lat: 59.3270, lng: 18.1037 }} />
+                <Marker
+                    position={{ lat: 59.3442, lng: 18.0456 }} />
+                <Marker
+                    position={{ lat: 59.3346, lng: 18.0605 }} />
+                <Marker
+                    position={{ lat: 59.3071, lng: 18.1199 }} />
+
             </GoogleMap>
         ));
 
