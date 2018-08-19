@@ -12,6 +12,7 @@ class App extends Component {
         searchedLocations: [],
         location: {}, // to get specific location
         animation: null, // animation for marker
+        error: null
     }
 
     componentDidMount() {
@@ -53,31 +54,39 @@ class App extends Component {
     }
 
     handleOnClickMarkerToggle = (marker) => {
-        this.setState({
-            location: marker,
-            animation: 1
-        })
-        setTimeout(() => {
+        //To catch an error inside event handler
+        try {
             this.setState({
-                animation: null
+                location: marker,
+                animation: 1
             })
-        }, 2000)
+            setTimeout(() => {
+                this.setState({
+                    animation: null
+                })
+            }, 2000)
+        } catch (error) {
+            this.setState({ error });
+        }
     }
 
-
     updateSearchFilter = (query) => {
-        if (query) {
-            this.setState({ query: query })
-            const nameMatch = new RegExp(escapeRegExp(query), 'i')
-            this.setState({
-                searchedLocations: this.state.venues
-                    .filter((marker) => nameMatch.test(marker.name))
-            })
-        } else {
-            this.setState({
-                query: "",
-                searchedLocations: this.state.venues
-            })
+        try {
+            if (query) {
+                this.setState({ query: query })
+                const nameMatch = new RegExp(escapeRegExp(query), 'i')
+                this.setState({
+                    searchedLocations: this.state.venues
+                        .filter((marker) => nameMatch.test(marker.name))
+                })
+            } else {
+                this.setState({
+                    query: "",
+                    searchedLocations: this.state.venues
+                })
+            }
+        } catch (error) {
+            this.setState({ error });
         }
     }
 
@@ -101,20 +110,25 @@ class App extends Component {
 
                 <main>
                     <nav role="doc-index">
-                        <VenuesList filters={this.state.searchedLocations}
-                            onSearchQuery={this.updateSearchFilter}
-                            markers={this.state.venues}
-                            onClickMarker={this.handleOnClickMarkerToggle} />
+                        <VenuesErrorBoundary>
+                            <VenuesList filters={this.state.searchedLocations}
+                                onSearchQuery={this.updateSearchFilter}
+                                markers={this.state.venues}
+                                onClickMarker={this.handleOnClickMarkerToggle}
+                            />
+                        </VenuesErrorBoundary>
                     </nav>
                     <section role="application">
                         <div id="map-container">
-                            <Map
-                                isMarkerShown
-                                center={this.state.defaultPosition}
-                                markers={this.state.venues}
-                                animation={this.state.animation}
-                                location={this.state.location}
-                                onClickMarker={this.handleOnClickMarkerToggle} />
+                            <MapErrorBoundary>
+                                <Map
+                                    isMarkerShown
+                                    center={this.state.defaultPosition}
+                                    markers={this.state.venues}
+                                    animation={this.state.animation}
+                                    location={this.state.location}
+                                    onClickMarker={this.handleOnClickMarkerToggle} />
+                            </MapErrorBoundary>
                         </div>
                     </section>
                 </main>
