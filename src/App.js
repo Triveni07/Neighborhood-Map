@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import MetaTags from 'react-meta-tags';
 import Map from './Map';
+import VenuesList from './VenuesList';
+import escapeRegExp from 'escape-string-regexp';
 import './App.css';
 class App extends Component {
 
@@ -62,6 +64,23 @@ class App extends Component {
         }, 2000)
     }
 
+
+    updateSearchFilter = (query) => {
+        if (query) {
+            this.setState({ query: query })
+            const nameMatch = new RegExp(escapeRegExp(query), 'i')
+            this.setState({
+                searchedLocations: this.state.venues
+                    .filter((marker) => nameMatch.test(marker.name))
+            })
+        } else {
+            this.setState({
+                query: "",
+                searchedLocations: this.state.venues
+            })
+        }
+    }
+
     render() {
         return (
             <div className="App">
@@ -81,6 +100,12 @@ class App extends Component {
                 </p>
 
                 <main role="main">
+                    <nav>
+                        <VenuesList filters={this.state.searchedLocations}
+                            onSearchQuery={this.updateSearchFilter}
+                            markers={this.state.venues}
+                            onClickMarker={this.handleOnClickMarkerToggle} />
+                    </nav>
                     <section>
                         <div id="map-container">
                             <Map
