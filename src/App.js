@@ -91,7 +91,7 @@ class App extends Component {
                     <meta charSet="utf-8" />
                 </MetaTags>
 
-                <header className="App-header">
+                <header className="App-header" role="banner">
                     <h1 tabIndex="0" className="App-title">Neighborhood Map</h1>
                 </header>
 
@@ -99,14 +99,14 @@ class App extends Component {
                     Visit nearby places in Stockholm, Sweden.
                 </p>
 
-                <main role="main">
-                    <nav>
+                <main>
+                    <nav role="doc-index">
                         <VenuesList filters={this.state.searchedLocations}
                             onSearchQuery={this.updateSearchFilter}
                             markers={this.state.venues}
                             onClickMarker={this.handleOnClickMarkerToggle} />
                     </nav>
-                    <section>
+                    <section role="application">
                         <div id="map-container">
                             <Map
                                 isMarkerShown
@@ -119,8 +119,11 @@ class App extends Component {
                     </section>
                 </main>
 
-                <footer tabIndex="0" className="footer">
-                    Stockholm city map provided by Google Maps API
+                <footer tabIndex="0" className="footer" role="contentinfo">
+                    Stockholm city map provided by {' '}
+                    <a href="https://developers.google.com/maps/documentation/">Google Maps API</a>
+                    {' '}and venues by {' '}
+                    <a href="https://foursquare.com/">Foursquare API </a>
                 </footer>
             </div>
         );

@@ -8,9 +8,10 @@ import PropTypes from 'prop-types';
  */
 const VenuesList = (props) => (
     <div className="location-list">
-        <h2 tabIndex="0">Stockholm : The Frozen World</h2>
+        <h2 tabIndex="0">
+            Stockholm : The Frozen World</h2>
         <div role="search">
-            <label role="filter"> </label>
+            <label> </label>
             <input type="text"
                 name="filter"
                 className="search-box"
@@ -35,6 +36,5 @@ VenuesList.propTypes = {
     query: PropTypes.string,
     onSearchQuery: PropTypes.func.isRequired
 }
-
 
 export default VenuesList;

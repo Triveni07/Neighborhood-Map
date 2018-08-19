@@ -46,7 +46,9 @@ const Map = compose(
                         <InfoWindow onCloseClick={() => props.onClickMarker(marker)}>
                             <div tabIndex="0" id="info-window">
                                 <h1>{marker.name}</h1>
-                                {marker.categories.map((category) => { return (<h2 key={category.id}> {category.name} </h2>) })}
+                                {marker.categories.map((category) => {
+                                    return (<h2 key={category.id}> {category.name} </h2>)
+                                })}
                                 <p>{marker.location.address}</p>
                             </div>
                         </InfoWindow>
