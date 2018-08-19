@@ -1,10 +1,16 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 /**
  * Catch errors occurred during the Foursquare API call to fetch venues and display a
  * message in the UI explaining the problem.
  */
 class VenuesErrorBoundary extends Component {
+
+    static propTypes = {
+        children: PropTypes.node
+    }
+
     state = {
         error: null,
         errorInfo: null
@@ -18,11 +24,16 @@ class VenuesErrorBoundary extends Component {
     }
 
     render() {
-        if (this.state.error === error) {
+        if (this.state.error !== null) {
             //  Render any custom fallback UI
             return (
                 <div className="venues-error">
-                    <h1>Oops! Foursquare API service cannot be reached...{errorInfo}</h1>
+                    <h2>Oops! Foursquare API service cannot be reached...</h2>
+                    <details style={{ whiteSpace: "pre-wrap" }}>
+                        {this.state.error && this.state.error.toString()}
+                        <br />
+                        {this.state.errorInfo.componentStack}
+                    </details>
                     <p> Try:</p>
                     <ul>
                         <li>Checking the network cables, modem, and router</li>
@@ -31,6 +42,7 @@ class VenuesErrorBoundary extends Component {
                 </div>
             );
         }
+        return this.props.children;
     }
 }
 

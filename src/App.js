@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import MetaTags from 'react-meta-tags';
 import Map from './Map';
 import VenuesList from './VenuesList';
+import VenuesErrorBoundary from './VenuesErrorBoundary';
+import MapErrorBoundary from './MapErrorBoundary';
 import escapeRegExp from 'escape-string-regexp';
 import './App.css';
 class App extends Component {
