@@ -4,8 +4,11 @@ import Map from './Map';
 import VenuesList from './VenuesList';
 import VenuesErrorBoundary from './VenuesErrorBoundary';
 import MapErrorBoundary from './MapErrorBoundary';
+import { Icon } from 'react-icons-kit';
+import { list } from 'react-icons-kit/icomoon/list'
 import escapeRegExp from 'escape-string-regexp';
 import './App.css';
+
 class App extends Component {
 
     state = {
@@ -14,7 +17,8 @@ class App extends Component {
         searchedLocations: [],
         location: {}, // to get specific location
         animation: null, // animation for marker
-        error: null
+        error: null,
+        isOpen: true
     }
 
     componentDidMount() {
@@ -91,6 +95,16 @@ class App extends Component {
         }
     }
 
+    /**
+ * When the user clicks on the hamburger menu icon, toggle the visibility
+ * of the list of locations. When the list is hidden, allow the map to
+ * expand to the entire page.
+ */
+    toggleNavVisibility = () => {
+        document.querySelector("section").style.width = "100%"
+        this.setState({ isOpen: !this.state.isOpen })
+    }
+
     render() {
         return (
             <div className="App">
@@ -104,21 +118,26 @@ class App extends Component {
                 <header className="App-header" role="banner">
                     <h1 tabIndex="0" className="App-title">Neighborhood Map</h1>
                 </header>
-
-                <p className="App-intro">
-                    Visit nearby places in Stockholm, Sweden.
-                </p>
-
                 <main>
-                    <nav role="doc-index">
-                        <VenuesErrorBoundary>
-                            <VenuesList filters={this.state.searchedLocations}
-                                onSearchQuery={this.updateSearchFilter}
-                                markers={this.state.venues}
-                                onClickMarker={this.handleOnClickMarkerToggle}
-                            />
-                        </VenuesErrorBoundary>
-                    </nav>
+                    <div id="list-toggle-icon">
+                        <Icon size={'100%'} icon={list} tabIndex={0}
+                            role="navigation"
+                            aria-label="Click to toggle venues list menu"
+                            isOpen={this.state.isOpenNav}
+                            onClick={this.toggleNavVisibility}
+                            onKeyPress={this.toggleNavVisibility} />
+                    </div>
+
+                    {this.state.isOpen &&
+                        <nav role="doc-index">
+                            <VenuesErrorBoundary>
+                                <VenuesList filters={this.state.searchedLocations}
+                                    onSearchQuery={this.updateSearchFilter}
+                                    markers={this.state.venues}
+                                    onClickMarker={this.handleOnClickMarkerToggle}
+                                />
+                            </VenuesErrorBoundary>
+                        </nav>}
                     <section role="application">
                         <div id="map-container">
                             <MapErrorBoundary>

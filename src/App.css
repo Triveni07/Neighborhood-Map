@@ -1,6 +1,7 @@
+
 .App {
     text-align: center;
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 
 .App-header {
@@ -14,9 +15,17 @@
   font-size: 1.7em;
 }
 
-.App-intro {
-  font-size: small;
-  font-weight: bold;
+#list-toggle-icon {
+	color: #ECEFF1;
+	background: #37474F;
+    text-align: center;
+    padding: 10px;
+    padding-right: 5px;
+    width: 3%;
+}
+
+#list-toggle-icon:hover {
+    color: #4db8ff;
 }
 
 main {
@@ -26,7 +35,6 @@ main {
   	text-align: center;
   	width: 100%;
 }
-
 
 #map-container {
   width: 100%;
@@ -73,7 +81,8 @@ li {
 
 .location-name:hover{
     cursor: pointer; 
-    color:#00FF00;
+    font-size: 1.5em;
+   /* color: #4db8ff;*/
 }
 
 .location-list
