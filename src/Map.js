@@ -38,6 +38,7 @@ const Map = compose(
                         lat: Number(marker.location.lat),
                         lng: Number(marker.location.lng)
                     }}
+
                     // Animate the marker when a location is selected 
                     animation={props.location.id === marker.id && props.animation}
                     onClick={() => props.onClickMarker(marker)}>
