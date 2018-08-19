@@ -2,11 +2,14 @@ import React, { Component } from 'react';
 import MetaTags from 'react-meta-tags';
 import Map from './Map';
 import './App.css';
-
 class App extends Component {
+
     state = {
-        venues: [],
-        defaultPosition: []
+        venues: [],// locations retrieved from foursquare
+        defaultPosition: [],
+        searchedLocations: [],
+        location: {}, // to get specific location
+        animation: null, // animation for marker
     }
 
     componentDidMount() {
@@ -29,13 +32,17 @@ class App extends Component {
         //Query details to get the desired venues in or nearby default positioned location
         const venueQueryDetails = {
             "ll": "59.3293, 18.0686",
-            "query": ''
+            "query": 'park',
+            "limit": 30 //to set the limit on query
         };
 
         foursquare.venues.getVenues(venueQueryDetails)
-            .then((venues) => {
-                console.log(venues);
-                this.setState({ venues });
+            .then((result) => {
+                console.log(result.response.venues);
+                this.setState({
+                    venues: this.state.venues.concat(result.response.venues),
+                    searchedLocations: this.state.venues.concat(result.response.venues)
+                });
             })
             .catch((err) => {
                 console.log(err);
@@ -43,8 +50,19 @@ class App extends Component {
 
     }
 
+    handleOnClickMarkerToggle = (marker) => {
+        this.setState({
+            location: marker,
+            animation: 1
+        })
+        setTimeout(() => {
+            this.setState({
+                animation: null
+            })
+        }, 2000)
+    }
+
     render() {
-        console.log(this.state.venues);
         return (
             <div className="App">
                 <MetaTags>
@@ -63,11 +81,17 @@ class App extends Component {
                 </p>
 
                 <main role="main">
-                    <div id="map-container">
-                        <Map
-                            center={this.state.defaultPosition}
-                            markers={this.state.venues} />
-                    </div>
+                    <section>
+                        <div id="map-container">
+                            <Map
+                                isMarkerShown
+                                center={this.state.defaultPosition}
+                                markers={this.state.venues}
+                                animation={this.state.animation}
+                                location={this.state.location}
+                                onClickMarker={this.handleOnClickMarkerToggle} />
+                        </div>
+                    </section>
                 </main>
 
                 <footer tabIndex="0" className="footer">

@@ -19,7 +19,7 @@
   font-weight: bold;
 }
 
-.main {
+main {
 	display: flex;
 	flex-direction: row;
 	height: 100vh;
@@ -36,8 +36,35 @@
    overflow: hidden;
  }
 
+section {
+	width: 100%;
+}
+
+
+#info-window{
+	margin: auto;
+	padding-left: 10px;
+
+}
+
+#info-window
+h1 {
+	font-size: 1em;
+    color: #009900;
+}
+
+#info-window
+h2,
+p {
+	font-size: 0.8em;
+    color:  #0000cc;
+}
+
 .footer{
     margin: 10px;
     position: relative;
     font-size: 0.6em;
+    color:  #0000cc;
 }
+
+

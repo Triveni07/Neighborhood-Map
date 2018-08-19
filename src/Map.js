@@ -1,46 +1,73 @@
-import React, { Component } from 'react';
-import { withScriptjs, withGoogleMap, GoogleMap, Marker } from 'react-google-maps';
 
-class Map extends Component {
+import React from 'react';
+import { compose, withProps } from 'recompose';
+import {
+    withScriptjs,
+    withGoogleMap,
+    GoogleMap,
+    Marker,
+    InfoWindow
+} from 'react-google-maps';
+import PropTypes from 'prop-types';
 
-    render() {
+/**
+ * Represent the Google map, with markers and info windows.
+ * For each location, add and show a marker on the map.
+ * When a marker is clicked, pass a call to open the InfoWindow showing
+ * additional details for that location.
+ */
+const Map = compose(
+    withProps({
+        googleMapURL: "https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=AIzaSyCW83YC217OdmY33WAmZqeFGr9DiCfbKAw",
+        loadingElement: <div style={{ height: '100%' }} />,
+        containerElement: <div style={{ height: '100%' }} />,
+        mapElement: <div style={{ height: '100%' }} />,
+    }),
+    withScriptjs,
+    withGoogleMap
+)((props) =>
+    <GoogleMap
+        defaultZoom={14}
+        defaultCenter={props.center}>
 
-        // load the googleMapUrl and api key withScriptJS HOC in react-google-maps 
-        const NeighborhoodMap = withScriptjs(withGoogleMap(props =>
-            <GoogleMap
-                defaultZoom={11}
-                defaultCenter={this.props.center}>
-                <Marker
-                    position={{ lat: 59.3671, lng: 17.8691 }} />
-                <Marker
-                    position={{ lat: 59.4541, lng: 17.9243 }} />
-                <Marker
-                    position={{ lat: 59.3257, lng: 18.0719 }} />
-                <Marker
-                    position={{ lat: 59.3270, lng: 18.1037 }} />
-                <Marker
-                    position={{ lat: 59.3442, lng: 18.0456 }} />
-                <Marker
-                    position={{ lat: 59.3346, lng: 18.0605 }} />
-                <Marker
-                    position={{ lat: 59.3071, lng: 18.1199 }} />
+        {props.isMarkerShown && props.markers.map((marker) => {
+            return (
+                <Marker key={marker.id}
+                    title={marker.name}
+                    position={{
+                        lat: Number(marker.location.lat),
+                        lng: Number(marker.location.lng)
+                    }}
+                    // Animate the marker when a location is selected 
+                    animation={props.location.id === marker.id && props.animation}
+                    onClick={() => props.onClickMarker(marker)}>
 
-            </GoogleMap>
-        ));
+                    {props.location.id === marker.id &&
+                        <InfoWindow onCloseClick={() => props.onClickMarker(marker)}>
+                            <div tabIndex="0" id="info-window">
+                                <h1>{marker.name}</h1>
+                                {marker.categories.map((category) => { return (<h2 key={category.id}> {category.name} </h2>) })}
+                                <p>{marker.location.address}</p>
+                            </div>
+                        </InfoWindow>
+                    }
+                </Marker>
+            )
+        })
+        }
+    </GoogleMap>
+)
 
-        return (
-            <div>
-                <NeighborhoodMap
-                    googleMapURL="https://maps.googleapis.com/maps/api/js?libraries=places,geometry,drawing&key=AIzaSyCW83YC217OdmY33WAmZqeFGr9DiCfbKAw&v=3&callback=initMap"
-                    loadingElement={<div style={{ height: `100%` }} />}
-                    containerElement={<div style={{ height: `400px` }} />}
-                    mapElement={<div style={{ height: `100%` }} />}
-                    isMarkerShown />
+Map.propTypes = {
+    googleMapURL: PropTypes.string,
+    loadingElement: PropTypes.element,
+    containerElement: PropTypes.element,
+    mapElement: PropTypes.element,
+    isMarkerShown: PropTypes.bool,
+    markers: PropTypes.arrayOf(PropTypes.object).isRequired,
+    location: PropTypes.object,
+    animation: PropTypes.number,
+    onClickMarker: PropTypes.func.isRequired
+}
 
-            </div>
-
-        );
-
-    }
-};
 export default Map;
