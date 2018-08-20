@@ -29,6 +29,7 @@ class App extends Component {
                 lng: 18.0686
             }
         })
+
         //Using foursquare api we can fetch any venues details 
         const foursquare = require('react-native-foursquare-api')({
             url: 'GET https://api.foursquare.com/v2/venues/VENUE_ID',
@@ -96,10 +97,10 @@ class App extends Component {
     }
 
     /**
- * When the user clicks on the hamburger menu icon, toggle the visibility
- * of the list of locations. When the list is hidden, allow the map to
- * expand to the entire page.
- */
+     * When the user clicks on the hamburger menu icon, toggle the visibility
+     * of the list of locations. When the list is hidden, allow the map to
+     * expand to the entire page.
+     */
     toggleNavVisibility = () => {
         document.querySelector("section").style.width = "100%"
         this.setState({ isOpen: !this.state.isOpen })
@@ -123,7 +124,6 @@ class App extends Component {
                         <Icon size={'100%'} icon={list} tabIndex={0}
                             role="navigation"
                             aria-label="Click to toggle venues list menu"
-                            isOpen={this.state.isOpenNav}
                             onClick={this.toggleNavVisibility}
                             onKeyPress={this.toggleNavVisibility} />
                     </div>
